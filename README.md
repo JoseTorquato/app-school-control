@@ -1,3 +1,1 @@
-## School Control
-
-=== Manuteção ===
+## SCHOOL

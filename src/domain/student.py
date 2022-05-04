@@ -1,7 +1,11 @@
+from src.db.database import DataBase
+
+
 class Student:
     def __init__(self):
         self.data = {}
-
+        self.db = DataBase()
+        
     def create_studant(self, name_student, age_student, number_class_room, name_father, name_mother):
         self.data["name_student"] = name_student 
         self.data["age_student"] = age_student 
@@ -18,7 +22,7 @@ class Student:
         print(f'Nome Mãe: {self.data["name_mother"]}')
 
     def add_studant(self):
-        print("Insirir em um banco")
+        self.db.add_row("school", "students", self.data)
 
     def get_student(self, name_student):
         print(f'Buscar o aluno {name_student}')
