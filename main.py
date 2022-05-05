@@ -6,7 +6,7 @@ from src.domain.teacher import Teacher
 
 def propt_init():
     print()
-    print("1 - Adicionar aluno \n2 - Adicionar professor \n3 - Criar uma Turma \n4 - Buscar um aluno \n5 - Buscar um professor(a) \n6 - Buscar uma turma \n0 - Sair")
+    print("1 - Adicionar aluno \n2 - Adicionar professor \n3 - Criar uma Turma \n4 - Buscar um aluno \n5 - Buscar um professor(a) \n6 - Buscar uma turma \n7 - Lista todas as turmas \n0 - Sair")
     print()
     return input("O que gostaria de fazer? ")
 
@@ -15,7 +15,7 @@ def add_student():
     print()
     name_student = input("Nome completo do estudante:  ")
     age_student = input("Idade do estudante:  ")
-    number_class_room = input("Turma do estudante:  ") # Validar se turma existe e se possui professora
+    number_class_room = input("Turma do estudante:  ") 
     name_father = input("Nome do Pai:  ")
     name_mother = input("Nome da Mãe:  ")
     new_student = Student()
@@ -28,29 +28,23 @@ def add_student():
         if confirmed.lower() == "s":
             return new_student.add_studant()
     
-    propt_init()
+    map[propt_init()]()
 
 
 def add_teacher():    
     print()
-    print("1 - Matricular um novo professor \n2 - Adicionar professor a uma turma \n0 - Sair")
-    print() 
-    user_input = input("O que gostaria de fazer? ")
-    if user_input == "1":
-        name_teacher = input("Nome completo:  ")
-        age_teacher = input("Idade:  ")
-        new_teacher = Teacher()
-        new_teacher.create_teacher(name_teacher, age_teacher)
-        print()
-        new_teacher.confirm_data()
-        confirmed = input("Digite S para salvar os dados ou pressione qualquer tecla para cancelar: ")
-        print()
-        if confirmed.lower() == "s":
-            return new_teacher.add_teacher_db()
-    elif user_input == "2":
-        print("Criar update, loginca onde adiciona a uma turma que já exista e adicione ao prof essa turma")
+    name_teacher = input("Nome completo:  ")
+    age_teacher = input("Idade:  ")
+    new_teacher = Teacher()
+    new_teacher.create_teacher(name_teacher, age_teacher)
+    print()
+    new_teacher.confirm_data()
+    confirmed = input("Digite S para salvar os dados ou pressione qualquer tecla para cancelar: ")
+    print()
+    if confirmed.lower() == "s":
+        return new_teacher.add_teacher_db()
 
-    propt_init()
+    map[propt_init()]()
 
     
 def add_class_room():    
@@ -68,7 +62,7 @@ def add_class_room():
     if confirmed.lower() == "s":
         return new_class.add_teacher_db()
 
-    propt_init()
+    map[propt_init()]()
 
 
 def get_input(type):
@@ -100,6 +94,12 @@ def get_class():
     search = True
     while search:
         search = get_input("class")
+
+def get_all_class():
+    db = DataBase()
+    db.get_all_class_db()
+
+    map[propt_init()]()
     
 
 map = {
@@ -108,15 +108,16 @@ map = {
     "3": add_class_room,
     "4": get_student,
     "5": get_teacher,
-    "6": get_class
+    "6": get_class,
+    "7": get_all_class
 }
 
 
 if __name__ == "__main__":
-    # try:
-    map[propt_init()]()
-    # except:
-    #     print()
-    #     print("Escolha inválida!")
-    #     map[propt_init()]()
+    try:
+        start = map[propt_init()]()
+    except:
+        print()
+        print("Escolha inválida!")
+        start = map[propt_init()]()
 

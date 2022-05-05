@@ -18,5 +18,3 @@ class Teacher:
     def add_teacher_db(self):
         self.db.add_row("school", "teachers", self.data)
 
-    def get_teacher(self, name_teacher):
-        print(f"Buscar o teacher {name_teacher}")

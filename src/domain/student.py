@@ -12,6 +12,7 @@ class Student:
         self.data["number_class_room"] = number_class_room
         self.data["name_father"] = name_father
         self.data["name_mother"] = name_mother
+        self.data["name_mother"] = name_mother
 
     def confirm_data(self):
         validator_class = self.db.validate_class_db(self.data["number_class_room"])
@@ -28,7 +29,4 @@ class Student:
 
     def add_studant(self):
         self.db.add_row("school", "students", self.data)
-
-    def get_student(self, name_student):
-        print(f'Buscar o aluno {name_student}')
     

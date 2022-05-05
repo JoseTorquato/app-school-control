@@ -12,14 +12,10 @@ class ClassRoom:
         self.data["id"] = number_class_room
 
     def confirm_data(self):
-        name_teacher = self.db.get_name_teacher_db(self.data["id_teacher"])
+        self.data["name_teacher"] = self.db.get_name_teacher_db(self.data["id_teacher"])
         print(f'Por favor confira se todos os dados abaixo estão corretos: ')
         print(f'Número da nova turma: {self.data["number_class_room"]}')
-        print(f'Responsável pela turma: ', name_teacher)
+        print(f'Responsável pela turma: {self.data["name_teacher"]}')
         
     def add_teacher_db(self):
-        self.db.add_row("school", "class", self.data)
-    
-    def get_class(self, number_class_room):
-        self.db.get_class_db(number_class_room)
-    
+        self.db.add_row("school", "class", self.data)    

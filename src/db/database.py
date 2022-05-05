@@ -9,27 +9,18 @@ class DataBase:
 
         conn.close()
 
-    def create_table(self, name_db, table, schema):
+    def create_table(self, name_db, schema):
         conn = sqlite3.connect(f'/Users/torquato/Documents/Pessoal/app-school-control/{name_db}.db')
 
         cursor = conn.cursor()
 
-        cursor.execute(f"""
-            CREATE TABLE {table} (
-            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-            id_teacher INTEGER NOT NULL,
-            name_teacher TEXT,
-            number_class_room INTEGER NOT NULL
-            );
-        """
-        )
+        cursor.execute(schema)
 
         print('Tabela criada com sucesso.')
 
         conn.close
 
     def add_row(self, name_db, table, data):
-        print(name_db, table, data)
         conn = sqlite3.connect(f'/Users/torquato/Documents/Pessoal/app-school-control/{name_db}.db')
 
         cursor = conn.cursor()
@@ -139,7 +130,7 @@ class DataBase:
                 print(f'Nome completo: {name}')
                 print(f'Idade: {age}')
                 print(f'Turma: {number_class}')
-                print(f'Dispponivel: {"Não" if number_class != "" else "Sim"}')
+                print(f'Dispponivel: {"Sim" if number_class != "" else "Não"}')
                 print(30*"-")
 
             conn.close()
@@ -163,7 +154,25 @@ class DataBase:
             conn.close()
             return False
         else:
-            print(f"Não existe a turma {number_class_room}")
+            print(f"Não existe a turma {number_class_room} ou ela não possui alunos ainda.")
+            conn.close()
+            return True
+
+
+    def get_all_class_db(self):
+        conn = sqlite3.connect(f'/Users/torquato/Documents/Pessoal/app-school-control/school.db')
+
+        cursor = conn.cursor()
+
+        cursor.execute(f"SELECT id,  FROM class;")
+        records = cursor.fetchall()
+        if records:
+            for id, teacher in records:
+                print(f"Turma: {id[0]} \nProf: {teacher[0]}")
+            conn.close()
+            return False
+        else:
+            print(f"Não existe nenhuma turma")
             conn.close()
             return True
 
@@ -177,7 +186,6 @@ class DataBase:
         cursor.execute(query, (number_class_room,))
 
         records = cursor.fetchall()
-
         if records:
             return True
         else:
@@ -186,19 +194,47 @@ class DataBase:
             
             return False
 
-# (
-# id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-# name_student TEXT NOT NULL,
-# age_student INTEGER,
-# number_class_room INTEGER NOT NULL,
-# name_father TEXT,
-# name_mother TEXT
-# );
-# # (
-# id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-# name_teacher TEXT NOT NULL,
-# age_teacher INTEGER,
-# number_class_room INTEGER NOT NULL,
-# );
-# db = DataBase()
-# db.create_table('school', 'class', 'ok')
+    def migrate(self):
+        schema_students = f"""
+                            CREATE TABLE students (
+                            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                            name_student TEXT NOT NULL,
+                            age_student INTEGER,
+                            number_class_room INTEGER NOT NULL,
+                            name_father TEXT,
+                            name_mother TEXT
+                        );
+                        """
+        schema_teachers = f"""
+                            CREATE TABLE teachers (
+                            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                            name_teacher TEXT NOT NULL,
+                            age_teacher INTEGER,
+                            number_class_room INTEGER
+                            );
+                        """
+        schema_class = f"""
+                            CREATE TABLE class (
+                            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                            id_teacher INTEGER NOT NULL,
+                            name_teacher TEXT,
+                            number_class_room INTEGER NOT NULL
+                        );
+                        """
+        print("Create DB start...")
+        self.create_db("school")
+        print("Create DB School...")
+        print()
+        print("Create table students...")
+        self.create_table('school', schema_students)
+        print("Create table students SUCESS...")
+        print()
+        print("Create table teachers...")
+        self.create_table('school', schema_teachers)
+        print("Create table teachers SUCESS...")
+        print()
+        print("Create table class...")
+        self.create_table('school', schema_class)
+        print("Create table class SUCESS...")
+        print()
+
