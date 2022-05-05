@@ -14,12 +14,17 @@ class Student:
         self.data["name_mother"] = name_mother
 
     def confirm_data(self):
-        print(f'Por favor confira se todos os dados abaixo estão corretos: ')
-        print(f'Nome completo: {self.data["name_student"]}')
-        print(f'Idade: {self.data["age_student"]}')
-        print(f'Turma: {self.data["number_class_room"]}')
-        print(f'Nome Pai: {self.data["name_father"]}')
-        print(f'Nome Mãe: {self.data["name_mother"]}')
+        validator_class = self.db.validate_class_db(self.data["number_class_room"])
+        if validator_class:
+            print(f'Por favor confira se todos os dados abaixo estão corretos: ')
+            print(f'Nome completo: {self.data["name_student"]}')
+            print(f'Idade: {self.data["age_student"]}')
+            print(f'Turma: {self.data["number_class_room"]}')
+            print(f'Nome Pai: {self.data["name_father"]}')
+            print(f'Nome Mãe: {self.data["name_mother"]}')
+            return True
+        else:
+            return False
 
     def add_studant(self):
         self.db.add_row("school", "students", self.data)

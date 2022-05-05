@@ -1,5 +1,4 @@
 import sqlite3
-from os import name
 
 
 class DataBase:
@@ -115,6 +114,7 @@ class DataBase:
         conn = sqlite3.connect(f'/Users/torquato/Documents/Pessoal/app-school-control/school.db')
 
         cursor = conn.cursor()
+       
         query = f"SELECT name_teacher FROM teachers WHERE id = ?"
         cursor.execute(query, (id_teacher,))
         records = cursor.fetchall()
@@ -166,6 +166,25 @@ class DataBase:
             print(f"Não existe a turma {number_class_room}")
             conn.close()
             return True
+
+
+    def validate_class_db(self, number_class_room):
+        conn = sqlite3.connect(f'/Users/torquato/Documents/Pessoal/app-school-control/school.db')
+
+        cursor = conn.cursor()
+
+        query = "SELECT * FROM class WHERE id = ?;"
+        cursor.execute(query, (number_class_room,))
+
+        records = cursor.fetchall()
+
+        if records:
+            return True
+        else:
+            print(f"Não existe a turma {number_class_room}")
+            conn.close()
+            
+            return False
 
 # (
 # id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,

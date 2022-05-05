@@ -21,12 +21,13 @@ def add_student():
     new_student = Student()
     new_student.create_studant(name_student, age_student, number_class_room, name_father, name_mother)
     print()
-    new_student.confirm_data()
-    confirmed = input("Digite S para salvar os dados ou pressione qualquer tecla para cancelar: ")
-    print()
-    if confirmed.lower() == "s":
-        return new_student.add_studant()
-
+    validator = new_student.confirm_data()
+    if validator:
+        confirmed = input("Digite S para salvar os dados ou pressione qualquer tecla para cancelar: ")
+        print()
+        if confirmed.lower() == "s":
+            return new_student.add_studant()
+    
     propt_init()
 
 
